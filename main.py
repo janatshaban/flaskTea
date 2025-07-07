@@ -1,14 +1,18 @@
+import os
 from flask import Flask
 import requests
 
 app = Flask(__name__)
 
-HASH_VALUE = "f972eecea9030dbe6efe"
-POST_API = "https://mdproxyvpn.com/v1/json/update"
-FAKE_DATA = "eLw3EV0c5sOmv1h20Ci3VNI8MNXMAg+g6rtrtrt"
+HASH_VALUE = os.getenv("HASH_VALUE")
+POST_API = os.getenv("POST_API")
+FAKE_DATA = os.getenv("FAKE_DATA")
 
 @app.route('/')
 def home():
+    if not all([HASH_VALUE, POST_API, FAKE_DATA]):
+        return "Error: Missing configuration."
+
     payload = {
         "hash": HASH_VALUE,
         "code": FAKE_DATA
